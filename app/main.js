@@ -18,7 +18,6 @@ class MainView extends React.Component {
     return (
       <div className="main">
         <Inputs main={this} />
-        (target £3, 10p, 4p)
       </div>
     );
   }
