@@ -5,7 +5,19 @@ export default class Inputs extends React.Component {
   convert() {
     let state = this.state || {};
 
-    state.output = <div className="amount">&pound;{this.state.amount.pound} {(this.state.amount.shilling + this.state.amount.pence)}p</div>;
+    let pound = this.state.amount.pound;
+    let pence = this.state.amount.shilling + this.state.amount.pence;
+
+    if (pence / 100 > 1) {
+      let poundMod = pence / 100;
+      pound = poundMod + pound;
+      pence = false;
+      pound = pound.toFixed(2);
+    } else {
+      pence = '.' + Math.round(pence);
+    }
+
+    state.output = <div className="amount">&pound;{pound}{pence}p</div>;
 
     this.setState(state);
   }
@@ -72,9 +84,12 @@ export default class Inputs extends React.Component {
       <div className="inputs">
         <input type="number" maxLength="4" id="year" defaultValue={year} />
         <br />
-      &pound;<input type="number" id="pound" defaultValue={pound} onChange={setValue} />
-        <input type="number" id="shilling" defaultValue={shilling} onChange={setValue} />s
-        <input type="number" id="pence" defaultValue={pence} onChange={setValue} />d
+        <label>&pound;</label>
+        <input type="number" id="pound" defaultValue={pound} onChange={setValue} />
+        <label>Shillings</label>
+        <input type="number" id="shilling" defaultValue={shilling} onChange={setValue} />
+        <label>Old Pence</label>
+        <input type="number" id="pence" defaultValue={pence} onChange={setValue} />
         <button onClick={_convert}>was about</button>
         {amount}
       </div>
