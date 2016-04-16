@@ -7,13 +7,16 @@ export default class Inputs extends React.Component {
     let state = this.state || {};
 
     let rpi = RPI[this.state.year.toString()] / 100;
+    let now = RPI['2015'] / 100;
 
     let pound = this.state.amount.pound;
     let pence = this.state.amount.shilling + this.state.amount.pence;
 
     let amount = (pound * 100) + pence;
 
-    amount = amount * rpi;
+    //amount = amount * rpi;
+
+    console.log(`${1 - ((now - rpi) * amount)}`);
 
     amount = amount / 100;
 
