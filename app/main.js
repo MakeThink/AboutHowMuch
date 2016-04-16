@@ -8,10 +8,10 @@ class MainView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      year: 1970,
-      pound: 3,
-      shilling: 2,
-      pence: 1
+      year: 1946,
+      pound: null,
+      shilling: null,
+      pence: null
     };
   }
   render() {

@@ -104,16 +104,36 @@ export default class Inputs extends React.Component {
 
     return (
       <div className="inputs">
-        <input type="number" maxLength="4" id="year" defaultValue={year} onChange={setYear} />
-        <br />
-        <label>&pound;</label>
-        <input type="number" id="pound" defaultValue={pound} onChange={setValue} />
-        <label>Shillings</label>
-        <input type="number" id="shilling" defaultValue={shilling} onChange={setValue} />
-        <label>Old Pence</label>
-        <input type="number" id="pence" defaultValue={pence} onChange={setValue} />
-        <button onClick={_convert}>was about</button>
-        {amount}
+        <div className="money mbm cf">
+          <div className="col-3-3">
+            <label className="input-label">Add an amount in pounds, shillings and pence</label>
+          </div>
+          <div className="col-1-3">
+            <input type="number" id="pound" defaultValue={pound} onChange={setValue} placeholder="&pound;" />
+          </div>
+          <div className="col-1-3">
+            <input type="number" id="shilling" defaultValue={shilling} onChange={setValue} placeholder="s" />
+          </div>
+          <div className="col-1-3">
+            <input type="number" id="pence" defaultValue={pence} onChange={setValue} placeholder="d" />
+          </div>
+        </div>
+        <div className="year mbm cf">
+          <div className="year-input">
+            <div className="col-1-3">
+              <span className="in">In</span>
+            </div>
+            <div className="col-2-3">
+              <label className="year-label">choose a year between now and 1694</label>
+              <input type="number" maxLength="4" id="year" defaultValue={year} onChange={setYear} />
+            </div>
+          </div>
+        </div>
+        <button onClick={_convert}>was about how much?</button>
+
+        <div className="result mtm">
+          {amount}
+        </div>
       </div>
     );
   }
