@@ -1,23 +1,30 @@
 import React from 'react';
 import {RATES} from 'app/config';
+import RPI from 'app/rpi'; // 2010 = 100% (baseline)
 
 export default class Inputs extends React.Component {
   convert() {
     let state = this.state || {};
 
+    let rpi = RPI[this.state.year.toString()] / 100;
+
     let pound = this.state.amount.pound;
     let pence = this.state.amount.shilling + this.state.amount.pence;
 
-    if (pence / 100 > 1) {
-      let poundMod = pence / 100;
-      pound = poundMod + pound;
-      pence = false;
-      pound = pound.toFixed(2);
-    } else {
-      pence = '.' + Math.round(pence);
+    let amount = (pound * 100) + pence;
+
+    amount = amount * rpi;
+
+    amount = amount / 100;
+
+    let _amount = 0;
+    let fixed = 1;
+    while(_amount === 0) {
+      _amount = parseFloat(amount.toFixed(fixed));
+      fixed = fixed + 1;
     }
 
-    state.output = <div className="amount">&pound;{pound}{pence}p</div>;
+    state.output = <div className="amount">&pound;{amount.toFixed(fixed)}p</div>;
 
     this.setState(state);
   }
@@ -42,9 +49,19 @@ export default class Inputs extends React.Component {
     this.setState(state);
   }
 
+  setYear(value) {
+    let state = this.state || {};
+
+    state.year = value;
+
+    this.setState(state);
+  }
+
+
   componentDidMount() {
     if (!this.state) {
       this.setValues({
+        year: this.props.main.state.year,
         amount: {
           pound: this.props.main.state.pound * RATES.pound,
           shilling: this.props.main.state.shilling * RATES.shilling,
@@ -78,11 +95,16 @@ export default class Inputs extends React.Component {
       const name = e.target.id;
       const value = e.target.value;
       self.setValue(name, value);
-    }
+    };
+
+    let setYear = function (e) {
+      const value = e.target.value;
+      self.setYear(value);
+    };
 
     return (
       <div className="inputs">
-        <input type="number" maxLength="4" id="year" defaultValue={year} />
+        <input type="number" maxLength="4" id="year" defaultValue={year} onChange={setYear} />
         <br />
         <label>&pound;</label>
         <input type="number" id="pound" defaultValue={pound} onChange={setValue} />
